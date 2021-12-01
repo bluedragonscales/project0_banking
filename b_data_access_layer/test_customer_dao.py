@@ -1,3 +1,5 @@
+# Module for all the tests of the customer dao methods.
+
 from a_entities.customer import Customer
 from b_data_access_layer.imp_customer_dao import CustomerDAOImp
 
@@ -6,10 +8,9 @@ from b_data_access_layer.imp_customer_dao import CustomerDAOImp
 customer_imp = CustomerDAOImp()
 # customer_postgres_dao = CustomerPostgresDAO()
 
-# Create test customer objects until they can be handled through a database.
 # Created a customer through the "Customer" class, passing in the arguments needed. The customer id is set for zero
 # right now so that it can be turned into a unique identifier later.
-customer_postgres = Customer("Jody", "Mills", 0, 0)
+customer_postgres = Customer("Jody", "Mills", 0)
 
 
 def test_create_customer_happy():
@@ -28,7 +29,7 @@ def test_get_customer_information_happy():
 
 
 def test_update_customer_information_happy():
-    update_info_cust = Customer("Changed by", "update customer method.", 1, 2)
+    update_info_cust = Customer("Changed by", "update customer method.", 1)
     updated_customer: Customer = customer_imp.update_customer_information(update_info_cust)
     assert updated_customer.last_name == "update customer method."
 

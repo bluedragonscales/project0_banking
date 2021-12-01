@@ -1,3 +1,5 @@
+# Module for the abstract class and methods for the customer's service layer.
+
 from abc import ABC, abstractmethod
 from a_entities.customer import Customer
 

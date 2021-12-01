@@ -27,8 +27,7 @@ def create_customer():
         # We format the data so that it is read correctly by the server.
         new_customer = Customer(customer_data["firstName"],
                                 customer_data["lastName"],
-                                customer_data["customerId"],
-                                customer_data["accountId"])
+                                customer_data["customerId"])
         # We pass this retrieved and formatted data into our service layer (leading to DAO layer) method.
         customer_to_return = customer_service.service_create_customer(new_customer)
         # The object that is crunched by the DAO and service layers are then passed back to the server and this turns it
@@ -38,7 +37,7 @@ def create_customer():
         customer_as_json = jsonify(customer_as_dictionary)
         # Sending the jsonified dictionary to the user (Postman).
         return customer_as_json
-    except DuplicateCustomerIdException as e:
+    except DuplicateCustomerException as e:
         exception_dictionary = {"message" : str(e)}
         jsonify_exception = jsonify(exception_dictionary)
         return jsonify_exception
@@ -62,11 +61,10 @@ def update_customer_information(customer_id: str):
         customer_data = request.get_json()
         new_customer = Customer(customer_data["firstName"],
                                 customer_data["lastName"],
-                                int(customer_id),
-                                customer_data["accountId"])
+                                int(customer_id))
         update_customer = customer_service.service_update_customer_information(new_customer)
         return "Hooray! Customer information updated successfully."
-    except DuplicateBankAccountException as e:
+    except DuplicateInformationException as e:
         exception_dictionary = {"message": str(e)}
         jsonify_exception = jsonify(exception_dictionary)
         return jsonify_exception
