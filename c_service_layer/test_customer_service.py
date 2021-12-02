@@ -23,11 +23,11 @@ duplicate_customer = Customer("Charlie", "Bradbury", 2)
 def test_validate_create_customer_sad():
     try:
         customer_service.service_create_customer(wrong_cust_info)
-        assert False
     except WrongInformationException as w:
         assert str(w) == "Incorrect information entered from front end."
 
-# We use this test to make sure a customer can't be deleted twice.
+
+# We use this test to make sure a customer can't be created twice.
 def test_cust_already_created_sad():
     try:
         customer_service.service_create_customer(duplicate_customer)

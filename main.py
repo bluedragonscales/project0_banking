@@ -41,6 +41,10 @@ def create_customer():
         exception_dictionary = {"message" : str(e)}
         jsonify_exception = jsonify(exception_dictionary)
         return jsonify_exception
+    except WrongInformationException as w:
+        exception_dictionary = {"message" : str(w)}
+        jsonify_exception = jsonify(exception_dictionary)
+        return jsonify_exception
 
 
 

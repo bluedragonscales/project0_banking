@@ -22,11 +22,11 @@ class CustomerServiceImp(CustomerService):
         for cust in self.customer_dao.customer_list:
             if cust.customer_id == customer.customer_id:
                 raise DuplicateCustomerException("This customer was already created.")
-        if isinstance(customer.first_name, str) and isinstance(customer.last_name, str) and \
-                isinstance(customer.customer_id, int):
-            return self.customer_dao.create_customer(customer)
-        else:
-            raise WrongInformationException("Incorrect information entered from front end.")
+            elif isinstance(customer.first_name, str) and isinstance(customer.last_name, str) and \
+                    isinstance(customer.customer_id, int):
+                return self.customer_dao.create_customer(customer)
+            else:
+                raise WrongInformationException("Incorrect information entered from front end.")
 
 
     def service_get_customer_information(self, customer_id: int) -> Customer:
@@ -41,8 +41,6 @@ class CustomerServiceImp(CustomerService):
             if cust.customer_id == customer.customer_id:
                 if cust.first_name == customer.first_name and cust.last_name == customer.last_name:
                     raise DuplicateInformationException("This information is already the same.")
-                # elif cust.last_name == customer.last_name:
-                #     raise DuplicateInformationException("The last name is already the same.")
                 else:
                     return self.customer_dao.update_customer_information(customer)
             else:
