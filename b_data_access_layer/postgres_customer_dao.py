@@ -42,10 +42,30 @@ class CustomerPostgresDAO(CustomerDAO):
 
 
     def update_customer_information(self, customer: Customer) -> Customer:
-        pass
+        sql = 'update "project0".customer set first_name = %s, last_name = %s where customer_id = %s returning customer_id'
+        cursor = connection.cursor()
+        cursor.execute(sql, (customer.first_name, customer.last_name, customer.customer_id))
+        customer.customer_id = cursor.fetchone()[0]
+        connection.commit()
+        return customer
+
 
     def view_all_customers(self) -> list[Customer]:
-        pass
+        sql = 'select * from "project0".customer'
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        # We use the "fetchall()" method for the cursor object because we are fetching all the information instead of
+        # just information that matches.
+        customer_records = cursor.fetchall()
+        customer_list = []
+        for cust in customer_records:
+            customer_list.append(Customer(*cust))
+        return customer_list
+
 
     def delete_customer(self, customer_id: int) -> bool:
-        pass
+        sql = 'delete from "project0".customer where customer_id = %s'
+        cursor = connection.cursor()
+        cursor.execute(sql, [customer_id])
+        connection.commit()
+        return True
