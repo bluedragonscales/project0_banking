@@ -27,6 +27,13 @@ def test_validate_create_customer_sad():
     except WrongInformationException as w:
         assert str(w) == "Incorrect information entered from front end."
 
+# We use this test to make sure a customer can't be deleted twice.
+def test_cust_already_created_sad():
+    try:
+        customer_service.service_create_customer(duplicate_customer)
+    except DuplicateCustomerException as d:
+        assert str(d) == "This customer was already created."
+
 
 
 # We use this test to make sure customers don't get duplicate bank accounts.
@@ -36,12 +43,6 @@ def test_validate_update_customer_information_sad():
     except DuplicateInformationException as b:
         assert str(b) == "This information is already the same."
 
-
-def test_cust_already_created_sad():
-    try:
-        customer_service.service_create_customer(duplicate_customer)
-    except DuplicateCustomerException as d:
-        assert str(d) == "This customer was already created."
 
 
 # We use this test to make sure customers can't be deleted twice.

@@ -39,14 +39,19 @@ class CustomerServiceImp(CustomerService):
         # happen and a custom exception will be raised.
         for cust in self.customer_dao.customer_list:
             if cust.customer_id == customer.customer_id:
-                if customer.first_name and customer.last_name:
+                if cust.first_name == customer.first_name and cust.last_name == customer.last_name:
                     raise DuplicateInformationException("This information is already the same.")
+                # elif cust.last_name == customer.last_name:
+                #     raise DuplicateInformationException("The last name is already the same.")
                 else:
                     return self.customer_dao.update_customer_information(customer)
+            else:
+                raise AlreadyDeletedException("This customer doesn't exist!")
 
 
     def service_view_all_customers(self) -> list[Customer]:
         return self.customer_dao.view_all_customers()
+
 
     def service_delete_customer(self, customer_id: int) -> bool:
         # Business logic for deleting a customer: going down the list of customers, if there is a matching customer_id

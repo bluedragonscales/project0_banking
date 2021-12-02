@@ -68,6 +68,10 @@ def update_customer_information(customer_id: str):
         exception_dictionary = {"message": str(e)}
         jsonify_exception = jsonify(exception_dictionary)
         return jsonify_exception
+    except AlreadyDeletedException as a:
+        exception_dictionary = {"message": str(a)}
+        jsonify_exception = jsonify(exception_dictionary)
+        return jsonify_exception
 
 
 
