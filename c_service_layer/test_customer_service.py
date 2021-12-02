@@ -1,4 +1,3 @@
-from a_entities import customer
 from a_entities.customer import Customer
 from b_data_access_layer.imp_customer_dao import CustomerDAOImp
 from c_service_layer.custom_exceptions import *
