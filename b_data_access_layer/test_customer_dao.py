@@ -8,7 +8,7 @@ postgres_customer_dao = CustomerPostgresDAO()
 
 # Created a customer through the "Customer" class, passing in the arguments needed. The customer id is set for zero
 # right now so that it can be turned into a unique identifier later.
-customer_postgres = Customer("Dean", "Winchester", 1)
+customer_postgres = Customer("Dean", "Winchester", 0)
 update_info_cust = Customer("Changed by", "update customer.", 7)
 
 

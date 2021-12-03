@@ -10,22 +10,29 @@ class BankAccountDAO(ABC):
     # access to all of the bank account information, and we also pass in the customer_id to reference the customer that
     # is opening the account.
     @abstractmethod
-    def create_bank_account(self, bank_account: BankAccount, customer_id: int) -> BankAccount:
+    def create_bank_account(self, bank_account: BankAccount) -> BankAccount:
         pass
+    # DONE
 
 
     # The abstract method to view the current bank account balance. We pass in the full bank account object so that the
     # method has access to both the bank account id and the actual balance.
     @abstractmethod
-    def view_bank_account_balance(self, bank_account: BankAccount) -> BankAccount:
+    def view_bank_account(self, account_id: int) -> BankAccount:
+        pass
+    # DONE
+
+
+    # The abstract method to deposit money into a bank account. We pass in an int to update the balance. Then we also
+    # pass in the bank account object so that only one person can update their own bank account.
+    @abstractmethod
+    def deposit(self, deposit: int, bank_account: BankAccount) -> BankAccount:
         pass
 
-
-    # The abstract method to deposit and withdraw in a bank account. We pass in an int (positive for a deposit and
-    # negative for a withdrawal) to update the balance. Then we also pass in the bank account object so that only one
-    # person can update their own bank account since their ids are tied.
+    # The abstract method to withdraw money from a bank account. We pass in an int to withdraw. Then we also pass in the
+    # bank account object so that only one person can update their own bank account.
     @abstractmethod
-    def update_bank_account(self, funds: int, bank_account: BankAccount) -> BankAccount:
+    def withdraw(self, withdraw: int, bank_account: BankAccount) -> BankAccount:
         pass
 
 
@@ -33,7 +40,14 @@ class BankAccountDAO(ABC):
     # can give money to someone but they cannot take it from someone else's bank account. We pass in multiple bank
     # accounts so multiple bank accounts can interact.
     @abstractmethod
-    def transfer_funds(self, *bank_account: BankAccount) -> BankAccount:
+    def transfer_funds(self, balance: int, bank_account_one: BankAccount, bank_account_two: BankAccount):
+        pass
+
+
+    # The abstract method to view all the accounts associated with just one customer. We pass in the customer id that
+    # is connected to at least one bank account and return a list of all accounts with that matching customer id.
+    @abstractmethod
+    def view_all_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
         pass
 
 

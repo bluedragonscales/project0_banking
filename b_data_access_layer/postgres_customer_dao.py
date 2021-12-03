@@ -5,17 +5,14 @@ from database_connection import connection
 class CustomerPostgresDAO(CustomerDAO):
 
     def create_customer(self, customer: Customer) -> Customer:
-        # We use this sql statement because this is how new information is added into a table in postgres and also how
-        # the customer_id information is returned to us from postgres. The "%s" is a placeholder for information not yet
-        # created. "Default" is used because the customer_id is an automatically created serial int.
+        # We use this sql statement to execute commands into our postgres database. The "%s" is a placeholder for
+        # information not yet created. "Default" is the customer_id which is already created in the database.
         sql = 'insert into "project0".customer values(%s, %s, default) returning customer_id'
-        # The cursor object allows the execution of sql from this end of the server. We import our connection object
-        # that connects us to the postgres database from the module "database_connection". The "cursor()" function
-        # activates the path to and from the database.
+        # The cursor object allows the execution of sql by using the connection object to connect this end of the
+        # server. The "cursor()" function activates the path to and from the database.
         cursor = connection.cursor()
-        # Then we use that cursor object to pass in a tuple version of the customer information to pass it into the
-        # database, changing it into sql language. Leave out the customer_id because that will be taken care of in
-        # postgres.
+        # The cursor object passes in a tuple version of the customer information we need to pass into the database,
+        # changing it into sql language.
         cursor.execute(sql, (customer.first_name, customer.last_name))
         # We fetch one item of data from postgres, which is the customer_id and store it in "customers_id". Because
         # the postgres command ends with "returning customer_id" that will be the first (and only) information returned
