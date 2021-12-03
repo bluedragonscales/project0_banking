@@ -42,7 +42,8 @@ class CustomerPostgresDAO(CustomerDAO):
 
 
     def update_customer_information(self, customer: Customer) -> Customer:
-        sql = 'update "project0".customer set first_name = %s, last_name = %s where customer_id = %s returning customer_id'
+        sql = 'update "project0".customer set first_name = %s, last_name = %s ' \
+              'where customer_id = %s returning customer_id'
         cursor = connection.cursor()
         cursor.execute(sql, (customer.first_name, customer.last_name, customer.customer_id))
         customer.customer_id = cursor.fetchone()[0]

@@ -14,17 +14,20 @@ class CustomerDAO(ABC):
     def create_customer(self, customer: Customer) -> Customer:
         pass
 
+
     # The abstract method to view the information associated with the customer. We pass the unique customer_id into the
     # method so all the information associated with that particular customer will be returned to the front end.
     @abstractmethod
     def get_customer_information(self, customer_id: int) -> Customer:
         pass
 
+
     # The abstract method to update customer information. We pass in the whole customer object so that all their info
     # has the ability to be updated and then the updated information returned to the front end.
     @abstractmethod
     def update_customer_information(self, customer: Customer) -> Customer:
         pass
+
 
     # The abstract method to view all customers. We don't pass anything into this method because we're just getting a
     # list of all the customers in the database, no special argument needed. The whole list will be returned to the
@@ -33,9 +36,10 @@ class CustomerDAO(ABC):
     def view_all_customers(self) -> list[Customer]:
         pass
 
+
     # The abstract method to delete a customer from the system. We pass in the unique customer id so any customer
     # associated with that id will be deleted from the system, including all of their information. A true/false outcome
-    # will be returned to the front end.
+    # will be returned to the front end. If the customer is deleted, the bank account has to be deleted also.
     @abstractmethod
     def delete_customer(self, customer_id: int) -> bool:
         pass

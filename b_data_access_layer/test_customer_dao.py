@@ -1,11 +1,9 @@
 # Module for all the tests of the customer dao methods.
 
 from a_entities.customer import Customer
-from b_data_access_layer.imp_customer_dao import CustomerDAOImp
 from b_data_access_layer.postgres_customer_dao import CustomerPostgresDAO
 
-# Created instances of classes "CustomerDAOImp" and "CustomerPostgresDAO" to use the methods defined inside each module.
-# imp_customer_dao = CustomerDAOImp()
+# Created an instance of "CustomerPostgresDAO" to use the methods defined inside each module.
 postgres_customer_dao = CustomerPostgresDAO()
 
 # Created a customer through the "Customer" class, passing in the arguments needed. The customer id is set for zero

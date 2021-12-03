@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
 from a_entities.customer import Customer
-from b_data_access_layer.imp_customer_dao import CustomerDAOImp
+from b_data_access_layer.postgres_customer_dao import CustomerPostgresDAO
+from c_service_layer.postgres_customer_service import CustomerPostgresService
 from c_service_layer.custom_exceptions import *
-from c_service_layer.imp_customer_service import CustomerServiceImp
 
 # Created the Flask object to use flask environment. Also created the DAO and the Service layer instances so that all
 # of the information for both layers are available here.
 app = Flask(__name__)
-customer_dao = CustomerDAOImp()
-customer_service = CustomerServiceImp(customer_dao)
+customer_dao = CustomerPostgresDAO()
+customer_service = CustomerPostgresService(customer_dao)
 # Passed in the customer's DAO layer so everything that happens in the service layer goes to the DAO layer and vise
 # versa.
 

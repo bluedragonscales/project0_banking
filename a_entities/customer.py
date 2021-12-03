@@ -1,5 +1,5 @@
 # Module to hold the customer object and its ability to turn into a dictionary so that it can be converted and passed
-# as JSONs to and from Postman. The objects will contain a first name, last name, and an unique customer id.
+# as JSONs to/from Postman and postgres.
 
 class Customer:
     def __init__(self, first_name: str, last_name: str, customer_id: int):
