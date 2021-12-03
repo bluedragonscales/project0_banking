@@ -15,18 +15,18 @@ class CustomerPostgresService(CustomerService):
         # custom exception.
         customers = self.customer_dao.view_all_customers()
         for cust in customers:
-            if cust.customer_id == customer.customer_id:
-                raise DuplicateCustomerException("This customer was already created.")
+            if isinstance(customer.first_name, str) and isinstance(customer.last_name, str) and \
+                    isinstance(customer.customer_id, int):
+                return self.customer_dao.create_customer(customer)
             else:
-                if isinstance(customer.first_name, str) and isinstance(customer.last_name, str) and \
-                        isinstance(customer.customer_id, int):
-                    return self.customer_dao.create_customer(customer)
-                else:
-                    raise WrongInformationException("Incorrect information entered from front end.")
+                raise WrongInformationException("Incorrect information entered from front end.")
 
 
     def service_get_customer_information(self, customer_id: int) -> Customer:
-        return self.customer_dao.get_customer_information(customer_id)
+        customers = self.customer_dao.view_all_customers()
+        for cust in customers:
+            if cust.customer_id == customer_id:
+                return self.customer_dao.get_customer_information(customer_id)
 
 
     def service_update_customer_information(self, customer: Customer) -> Customer:
@@ -36,13 +36,8 @@ class CustomerPostgresService(CustomerService):
         customers = self.customer_dao.view_all_customers()
         for cust in customers:
             if cust.customer_id == customer.customer_id:
-                if cust.first_name == customer.first_name and cust.last_name == customer.last_name:
-                    raise DuplicateInformationException("This information is already the same.")
-                else:
-                    update = self.customer_dao.update_customer_information(customer)
-                    return update
-            else:
-                raise AlreadyDeletedException("This customer doesn't exist!")
+                update = self.customer_dao.update_customer_information(customer)
+                return update
 
 
     def service_view_all_customers(self) -> list[Customer]:
@@ -56,7 +51,5 @@ class CustomerPostgresService(CustomerService):
         customers = self.customer_dao.view_all_customers()
         for cust in customers:
             if cust.customer_id == customer_id:
-                delete = self.customer_dao.delete_customer(customer_id)
-                return delete
-            else:
-                raise AlreadyDeletedException("This customer doesn't exist!")
+                self.customer_dao.delete_customer(customer_id)
+                return True

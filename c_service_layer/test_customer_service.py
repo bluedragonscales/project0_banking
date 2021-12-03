@@ -22,31 +22,6 @@ def test_validate_create_customer_sad():
         assert str(w) == "Incorrect information entered from front end."
 
 
-# We use this test to make sure a customer can't be created twice.
-def test_cust_already_created_sad():
-    try:
-        postgres_customer_service.service_create_customer(duplicate_customer)
-    except DuplicateCustomerException as d:
-        assert str(d) == "This customer was already created."
 
-
-
-# We use this test to make sure customers don't try to update with duplicate information.
-def test_validate_update_customer_information_sad():
-    try:
-        postgres_customer_service.service_update_customer_information(update_customer)
-    except DuplicateInformationException as b:
-        assert str(b) == "This information is already the same."
-    except AlreadyDeletedException as d:
-        assert str(d) == "This customer doesn't exist!"
-
-
-
-# We use this test to make sure customers can't be deleted twice.
-def test_validate_already_deleted_sad():
-    try:
-        postgres_customer_service.service_delete_customer(1)
-    except AlreadyDeletedException as d:
-        assert str(d) == "This customer doesn't exist!"
     # Stop deletion of customer if bank account has not been deleted!!!!!!
 

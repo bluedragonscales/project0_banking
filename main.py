@@ -9,15 +9,11 @@ from c_service_layer.custom_exceptions import *
 app = Flask(__name__)
 customer_dao = CustomerPostgresDAO()
 customer_service = CustomerPostgresService(customer_dao)
-# Passed in the customer's DAO layer so everything that happens in the service layer goes to the DAO layer and vise
-# versa.
 
 
 
 @app.post("/customer")
 def create_customer():
-    # Creating a request to create a customer and storing the information in a variable "customer_to_return" so we can
-    # return this requested information back to the user on the API side (Postman in this case).
     try:
         # We retrieve the request that the API sent to this server.
         customer_data = request.get_json()
@@ -32,12 +28,8 @@ def create_customer():
         customer_as_json = jsonify(customer_as_dictionary)
         # Sending the jsonified dictionary to the user (Postman).
         return customer_as_json
-    except DuplicateCustomerException as e:
-        exception_dictionary = {"message" : str(e)}
-        jsonify_exception = jsonify(exception_dictionary)
-        return jsonify_exception
     except WrongInformationException as w:
-        exception_dictionary = {"message" : str(w)}
+        exception_dictionary = {"Message" : str(w)}
         jsonify_exception = jsonify(exception_dictionary)
         return jsonify_exception
 
@@ -46,10 +38,15 @@ def create_customer():
 # The route to view all the information associated with the customer.
 @app.get("/customer/<customer_id>")
 def get_customer_information(customer_id: str):
-    result = customer_service.service_get_customer_information(int(customer_id))
-    result_as_dictionary = result.customer_dictionary()
-    result_as_json = jsonify(result_as_dictionary)
-    return result_as_json
+    try:
+        result = customer_service.service_get_customer_information(int(customer_id))
+        result_as_dictionary = result.customer_dictionary()
+        result_as_json = jsonify(result_as_dictionary)
+        return result_as_json
+    except AlreadyDeletedException as a:
+        exception_dictionary = {"Message" : str(a)}
+        jsonify_exception = jsonify(exception_dictionary)
+        return jsonify_exception
 
 
 
@@ -62,11 +59,7 @@ def update_customer_information(customer_id: str):
                                 customer_data["lastName"],
                                 int(customer_id))
         customer_service.service_update_customer_information(new_customer)
-        return "Hooray! Customer information updated successfully."
-    except DuplicateInformationException as e:
-        exception_dictionary = {"message": str(e)}
-        jsonify_exception = jsonify(exception_dictionary)
-        return jsonify_exception
+        return "Hooray! Customer information for customer with id {} updated successfully.".format(customer_id)
     except AlreadyDeletedException as a:
         exception_dictionary = {"message": str(a)}
         jsonify_exception = jsonify(exception_dictionary)
@@ -88,12 +81,14 @@ def view_all_customers():
 
 # The route to delete a customer from the system.
 @app.delete("/customer/<customer_id>")
-def delete_customer_information(customer_id: str):
+def delete_customer(customer_id: str):
     try:
         customer_service.service_delete_customer(int(customer_id))
         return "Customer with id {} has been deleted.".format(customer_id)
-    except AlreadyDeletedException as e:
-        return str(e)
+    except AlreadyDeletedException as a:
+        exception_dictionary = {"message": str(a)}
+        jsonify_exception = jsonify(exception_dictionary)
+        return jsonify_exception
 
 
 

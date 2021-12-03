@@ -6,9 +6,8 @@ class CustomerPostgresDAO(CustomerDAO):
 
     def create_customer(self, customer: Customer) -> Customer:
         # We use this sql statement because this is how new information is added into a table in postgres and also how
-        # the customer_id information is returned to us in postgres. The "%s" is a placeholder for information that is
-        # not yet created. "Default" is used because the customer_id is an automatically created serial int.
-        # For sql statements = in
+        # the customer_id information is returned to us from postgres. The "%s" is a placeholder for information not yet
+        # created. "Default" is used because the customer_id is an automatically created serial int.
         sql = 'insert into "project0".customer values(%s, %s, default) returning customer_id'
         # The cursor object allows the execution of sql from this end of the server. We import our connection object
         # that connects us to the postgres database from the module "database_connection". The "cursor()" function
@@ -20,9 +19,9 @@ class CustomerPostgresDAO(CustomerDAO):
         cursor.execute(sql, (customer.first_name, customer.last_name))
         # We fetch one item of data from postgres, which is the customer_id and store it in "customers_id". Because
         # the postgres command ends with "returning customer_id" that will be the first (and only) information returned
-        # to us so we can put the fetchone index to 0.
-        customer_id = cursor.fetchone()[0]
-        customer.customer_id = customer_id
+        # to us, so we can put the fetchone index to 0.
+        customers_id = cursor.fetchone()[0]
+        customer.customer_id = customers_id
         # When using insert, update, or delete sql statements we need to use the "commit()" function on the connection
         # object so that those statements will stick to the tables and not disappear.
         connection.commit()
