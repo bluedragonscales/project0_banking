@@ -13,13 +13,16 @@ class CustomerPostgresService(CustomerService):
     def service_create_customer(self, customer: Customer) -> Customer:
         # Business logic for create customer: if user provides an incorrect data type for the parameters then throw a
         # custom exception.
-        customers = self.customer_dao.view_all_customers()
-        for cust in customers:
-            if isinstance(customer.first_name, str) and isinstance(customer.last_name, str) and \
-                    isinstance(customer.customer_id, int):
-                return self.customer_dao.create_customer(customer)
-            else:
-                raise WrongInformationException("Incorrect information entered from front end.")
+        if isinstance(customer.first_name, str) and isinstance(customer.last_name, str) and \
+                isinstance(customer.customer_id, int):
+            customers = self.customer_dao.view_all_customers()
+            for cust in customers:
+                if cust.customer_id != customer.customer_id:
+                    return self.customer_dao.create_customer(customer)
+                else:
+                    raise DuplicateCustomerException("Customer already exists!")
+        else:
+            raise WrongInformationException("Incorrect information entered from front end.")
 
 
     def service_get_customer_information(self, customer_id: int) -> Customer:

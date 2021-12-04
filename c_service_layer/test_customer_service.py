@@ -20,6 +20,8 @@ def test_validate_create_customer_sad():
         postgres_customer_service.service_create_customer(wrong_cust_info)
     except WrongInformationException as w:
         assert str(w) == "Incorrect information entered from front end."
+    except DuplicateCustomerException as d:
+        assert str(d) == "Customer already exists!"
 
 
 

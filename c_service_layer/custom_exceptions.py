@@ -4,7 +4,7 @@ class WrongInformationException(Exception):
 
 
 
-class AlreadyDeletedException(Exception):
+class DoesNotExistException(Exception):
     def __init__(self, message: str):
         self.message = message
 
@@ -16,5 +16,10 @@ class DuplicateInformationException(Exception):
 
 
 class DuplicateCustomerException(Exception):
+    def __init__(self, message: str):
+        self.message = message
+
+
+class InsufficientFundsException(Exception):
     def __init__(self, message: str):
         self.message = message

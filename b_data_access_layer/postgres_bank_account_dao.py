@@ -7,7 +7,6 @@ from database_connection import connection
 class BankAccountPostgresDAO(BankAccountDAO):
 
     def create_bank_account(self, bank_account: BankAccount) -> BankAccount:
-        # DONE
         sql = 'insert into "project0".bank_account values (default, %s, %s) returning account_id'
         cursor = connection.cursor()
         cursor.execute(sql, (bank_account.customer_id, bank_account.balance))
