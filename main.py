@@ -7,6 +7,9 @@ from b_data_access_layer.postgres_customer_dao import CustomerPostgresDAO
 from c_service_layer.postgres_bank_account_service import BankAccountPostgresService
 from c_service_layer.postgres_customer_service import CustomerPostgresService
 from c_service_layer.custom_exceptions import *
+import logging
+
+logging.basicConfig(filename="records.log", level=logging.DEBUG, format=f"%(asctime)s %(levelname)s %(message)s")
 
 # Created the Flask object to use flask environment. Also created the DAO and the Service layer instances so that all
 # of the information for both layers are available here.
