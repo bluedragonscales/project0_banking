@@ -1,4 +1,5 @@
 # Module for the DAO layer methods for the bank account object.
+
 from a_entities.bank_account import BankAccount
 from b_data_access_layer.abstract_bank_account_dao import BankAccountDAO
 from database_connection import connection
@@ -16,8 +17,8 @@ class BankAccountPostgresDAO(BankAccountDAO):
         return bank_account
 
 
-    def view_bank_account(self, account_id: int) -> BankAccount:
-        # DONE
+
+    def view_bank_account_balance(self, account_id: int):
         sql = 'select balance from "project0".bank_account where account_id = %s'
         cursor = connection.cursor()
         # Passing only one argument into the sql so using a list instead of a tuple.
@@ -28,8 +29,7 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
 
-    def deposit(self, deposit: int, bank_account: BankAccount) -> BankAccount:
-        # DONE
+    def deposit(self, deposit: int, bank_account: BankAccount):
         sql = 'update "project0".bank_account set balance = balance + %s where account_id = %s returning balance'
         cursor = connection.cursor()
         cursor.execute(sql, (deposit, bank_account.account_id))
@@ -38,8 +38,8 @@ class BankAccountPostgresDAO(BankAccountDAO):
         return account_balance
 
 
-    def withdraw(self, withdraw: int, bank_account: BankAccount) -> BankAccount:
-        # DONE
+
+    def withdraw(self, withdraw: int, bank_account: BankAccount):
         sql = 'update "project0".bank_account set balance = balance - %s where account_id = %s returning balance'
         cursor = connection.cursor()
         cursor.execute(sql, (withdraw, bank_account.account_id))
@@ -50,7 +50,6 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
     def transfer_funds(self, balance: int, bank_account_one: BankAccount, bank_account_two: BankAccount):
-        # DONE
         sql = 'update "project0".bank_account set balance = balance - %s where account_id = %s'
         cursor = connection.cursor()
         cursor.execute(sql, (balance, bank_account_one.account_id))
@@ -63,7 +62,6 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
     def view_all_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
-        # DONE
         sql = 'select * from "project0".bank_account where customer_id = %s'
         cursor = connection.cursor()
         cursor.execute(sql, [customer_id])
@@ -79,7 +77,6 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
     def view_all_bank_accounts(self) -> list[BankAccount]:
-        # DONE
         sql = 'select * from "project0".bank_account'
         cursor = connection.cursor()
         cursor.execute(sql)
@@ -92,8 +89,8 @@ class BankAccountPostgresDAO(BankAccountDAO):
         return bank_account_list
 
 
+
     def delete_bank_account(self, account_id: int) -> bool:
-        # DONE
         sql = 'delete from "project0".bank_account where account_id = %s'
         cursor = connection.cursor()
         cursor.execute(sql, [account_id])

@@ -9,7 +9,7 @@ class BankAccountService(ABC):
         pass
 
     @abstractmethod
-    def service_view_bank_account(self, account_id: int) -> BankAccount:
+    def service_view_bank_account_balance(self, account_id: int) -> BankAccount:
         pass
 
     @abstractmethod

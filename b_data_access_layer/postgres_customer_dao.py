@@ -1,28 +1,30 @@
+# Module for the DAO layer methods for the customer object.
+
 from a_entities.customer import Customer
 from b_data_access_layer.abstract_customer_dao import CustomerDAO
 from database_connection import connection
 
+
 class CustomerPostgresDAO(CustomerDAO):
 
     def create_customer(self, customer: Customer) -> Customer:
-        # We use this sql statement to execute commands into our postgres database. The "%s" is a placeholder for
-        # information not yet created. "Default" is the customer_id which is already created in the database.
+        # We use this sql statement to execute commands into our postgres database.
         sql = 'insert into "project0".customer values(%s, %s, default) returning customer_id'
-        # The cursor object allows the execution of sql by using the connection object to connect this end of the
-        # server. The "cursor()" function activates the path to and from the database.
+        # The cursor variable created with the "cursor()" function called by the connection object allows the execution
+        # of sql from this end of the server.
         cursor = connection.cursor()
-        # The cursor object passes in a tuple version of the customer information we need to pass into the database,
-        # changing it into sql language.
+        # The "execute()" function passes in the sql statement to execute and also a tuple version of the customer
+        # information being passed into the database.
         cursor.execute(sql, (customer.first_name, customer.last_name))
-        # We fetch one item of data from postgres, which is the customer_id and store it in "customers_id". Because
-        # the postgres command ends with "returning customer_id" that will be the first (and only) information returned
-        # to us, so we can put the fetchone index to 0.
+        # We fetch one item of data from postgres, which is the customer_id and store it in "customers_id".
         customers_id = cursor.fetchone()[0]
+        # We assign this created id to the customer object.
         customer.customer_id = customers_id
-        # When using insert, update, or delete sql statements we need to use the "commit()" function on the connection
-        # object so that those statements will stick to the tables and not disappear.
+        # When using insert, update, or delete sql statements we need to use the "commit()" function with the connection
+        # so that those statements will stick to the tables and not disappear.
         connection.commit()
         return customer
+
 
 
     def get_customer_information(self, customer_id: int) -> Customer:
@@ -37,6 +39,7 @@ class CustomerPostgresDAO(CustomerDAO):
         return cust_info
 
 
+
     def update_customer_information(self, customer: Customer) -> Customer:
         sql = 'update "project0".customer set first_name = %s, last_name = %s ' \
               'where customer_id = %s returning customer_id'
@@ -45,6 +48,7 @@ class CustomerPostgresDAO(CustomerDAO):
         customer.customer_id = cursor.fetchone()[0]
         connection.commit()
         return customer
+
 
 
     def view_all_customers(self) -> list[Customer]:
@@ -58,6 +62,7 @@ class CustomerPostgresDAO(CustomerDAO):
         for cust in customer_records:
             customer_list.append(Customer(*cust))
         return customer_list
+
 
 
     def delete_customer(self, customer_id: int) -> bool:

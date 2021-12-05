@@ -21,12 +21,13 @@ class BankAccountPostgresService(BankAccountService):
                 return self.bank_account_dao.create_bank_account(bank_account)
 
 
-    def service_view_bank_account(self, account_id: int) -> BankAccount:
+
+    def service_view_bank_account_balance(self, account_id: int) -> BankAccount:
         # Business logic: a bank account cannot be viewed if the id doesn't exist.
         account_list = self.bank_account_dao.view_all_bank_accounts()
         for account in account_list:
             if account.account_id == account_id:
-                return self.bank_account_dao.view_bank_account(account_id)
+                return self.bank_account_dao.view_bank_account_balance(account_id)
             else:
                 raise DoesNotExistException("Bank account has not been created.")
 
@@ -34,6 +35,7 @@ class BankAccountPostgresService(BankAccountService):
 
     def service_deposit(self, deposit: int, bank_account: BankAccount) -> BankAccount:
         return self.bank_account_dao.deposit(deposit, bank_account)
+
 
 
     def service_withdraw(self, withdraw: int, bank_account: BankAccount) -> BankAccount:
@@ -44,6 +46,7 @@ class BankAccountPostgresService(BankAccountService):
             return self.bank_account_dao.withdraw(withdraw, bank_account)
 
 
+
     def service_transfer_funds(self, balance: int, bank_account_one: BankAccount, bank_account_two: BankAccount):
         # Business logic: money in an account cannot be transferred if the balance will go beneath 0.
         if bank_account_one.balance < balance:
@@ -52,12 +55,15 @@ class BankAccountPostgresService(BankAccountService):
             return self.bank_account_dao.transfer_funds(balance, bank_account_one, bank_account_two)
 
 
+
     def service_view_all_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
         return self.bank_account_dao.view_all_accounts_per_customer(customer_id)
 
 
+
     def service_view_all_bank_accounts(self) -> list[BankAccount]:
         return self.bank_account_dao.view_all_bank_accounts()
+
 
 
     def service_delete_bank_account(self, account_id: int) -> bool:

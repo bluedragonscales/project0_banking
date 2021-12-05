@@ -12,6 +12,7 @@ bad_withdrawal = BankAccount(2, 2, 5)
 transfer_test = BankAccount(8, 2, 15)
 
 
+
 def test_validate_create_bank_account_sad():
     try:
         postgres_bank_account_service.service_create_bank_account(unable_to_create)
@@ -19,9 +20,10 @@ def test_validate_create_bank_account_sad():
         assert str(d) == "Bank account cannot be created for nonexistent customer."
 
 
-def test_validate_view_account_sad():
+
+def test_validate_view_account_balance_sad():
     try:
-        postgres_bank_account_service.service_view_bank_account(20)
+        postgres_bank_account_service.service_view_bank_account_balance(20)
     except DoesNotExistException as d:
         assert str(d) == "Bank account has not been created."
 
@@ -34,11 +36,13 @@ def test_validate_withdraw_sad():
         assert str(i) == "Insufficient funds to make this withdrawal."
 
 
+
 def test_validate_transfer_funds_sad():
     try:
         postgres_bank_account_service.service_transfer_funds(20, bad_withdrawal, transfer_test)
     except InsufficientFundsException as i:
         assert str(i) == "First account has insufficient funds to transfer."
+
 
 
 def test_validate_delete_account_sad():
