@@ -13,10 +13,10 @@ class BankAccountDAO(ABC):
         pass
 
 
-    # The abstract method to view the current bank account balance. We pass in the account id to view all that id's
+    # The abstract method to view the bank account information. We pass in the account id to view all that id's
     # information such as the balance.
     @abstractmethod
-    def view_bank_account_balance(self, account_id: int):
+    def view_bank_account(self, account_id: int):
         pass
 
 
@@ -40,13 +40,6 @@ class BankAccountDAO(ABC):
     def transfer_funds(self, balance: int, bank_account_one: BankAccount, bank_account_two: BankAccount):
         pass
 
-
-    # The abstract method to view all the accounts associated with just one customer. We pass in the customer id that
-    # is connected to at least one bank account and return a list of all accounts with that matching customer id. What's
-    # returned is a list.
-    @abstractmethod
-    def view_all_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
-        pass
 
 
     # The abstract method to view all of the created bank accounts. No arguments to pass because it's just a list of

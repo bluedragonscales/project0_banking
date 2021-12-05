@@ -18,14 +18,15 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
 
-    def view_bank_account_balance(self, account_id: int):
-        sql = 'select balance from "project0".bank_account where account_id = %s'
+    def view_bank_account(self, account_id: int):
+        sql = 'select * from "project0".bank_account where account_id = %s'
         cursor = connection.cursor()
         # Passing only one argument into the sql so using a list instead of a tuple.
         cursor.execute(sql, [account_id])
-        bank_record = cursor.fetchone()[0]
-        bank_account_balance = bank_record
-        return bank_account_balance
+        bank_record = cursor.fetchone()
+        bank_account_info = BankAccount(*bank_record)
+        return bank_account_info
+
 
 
 
@@ -59,20 +60,6 @@ class BankAccountPostgresDAO(BankAccountDAO):
         connection.commit()
         return bank_account_two.balance
 
-
-
-    def view_all_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
-        sql = 'select * from "project0".bank_account where customer_id = %s'
-        cursor = connection.cursor()
-        cursor.execute(sql, [customer_id])
-        account_records_per_cust = cursor.fetchall()
-        customers = BankAccountPostgresDAO.view_all_bank_accounts(self)
-        for cust in customers:
-            if cust.customer_id == customer_id:
-                customer_account_list = []
-                for record in account_records_per_cust:
-                    customer_account_list.append(BankAccount(*record))
-                return customer_account_list
 
 
 

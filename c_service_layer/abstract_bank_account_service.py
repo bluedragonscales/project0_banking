@@ -9,7 +9,7 @@ class BankAccountService(ABC):
         pass
 
     @abstractmethod
-    def service_view_bank_account_balance(self, account_id: int) -> BankAccount:
+    def service_view_bank_account(self, account_id: int) -> BankAccount:
         pass
 
     @abstractmethod
@@ -17,15 +17,11 @@ class BankAccountService(ABC):
         pass
 
     @abstractmethod
-    def service_withdraw(self, withdraw: int, bank_account: BankAccount) -> BankAccount:
+    def service_withdraw(self, withdraw: int, bank_account: BankAccount):
         pass
 
     @abstractmethod
     def service_transfer_funds(self, balance: int, bank_account_one: BankAccount, bank_account_two: BankAccount):
-        pass
-
-    @abstractmethod
-    def service_view_all_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
         pass
 
     @abstractmethod

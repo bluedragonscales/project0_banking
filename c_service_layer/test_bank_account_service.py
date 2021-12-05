@@ -7,25 +7,10 @@ postgres_bank_account_dao = BankAccountPostgresDAO()
 postgres_bank_account_service = BankAccountPostgresService(postgres_bank_account_dao)
 
 
-unable_to_create = BankAccount(0, 20, 10)
 bad_withdrawal = BankAccount(2, 2, 5)
 transfer_test = BankAccount(8, 2, 15)
 
 
-
-def test_validate_create_bank_account_sad():
-    try:
-        postgres_bank_account_service.service_create_bank_account(unable_to_create)
-    except DoesNotExistException as d:
-        assert str(d) == "Bank account cannot be created for nonexistent customer."
-
-
-
-def test_validate_view_account_balance_sad():
-    try:
-        postgres_bank_account_service.service_view_bank_account_balance(20)
-    except DoesNotExistException as d:
-        assert str(d) == "Bank account has not been created."
 
 
 
@@ -44,9 +29,3 @@ def test_validate_transfer_funds_sad():
         assert str(i) == "First account has insufficient funds to transfer."
 
 
-
-def test_validate_delete_account_sad():
-    try:
-        postgres_bank_account_service.service_delete_bank_account(20)
-    except DoesNotExistException as d:
-        assert str(d) == "Bank account does not exist."

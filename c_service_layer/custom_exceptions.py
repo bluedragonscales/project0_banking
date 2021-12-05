@@ -14,3 +14,9 @@ class DeletionErrorException(Exception):
 class InsufficientFundsException(Exception):
     def __init__(self, message: str):
         self.message = message
+
+
+
+class DoesNotExistException(Exception):
+    def __init__(self, message: str):
+        self.message = message
