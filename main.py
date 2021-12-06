@@ -87,7 +87,7 @@ def update_customer_information(customer_id: str):
 
 
 
-@app.patch("/account/<account_id>/<balance>")
+@app.patch("/account/deposit/<account_id>/<balance>")
 def deposit(account_id: str, balance: str):
     money_data = request.get_json()
     new_balance = BankAccount(int(account_id), money_data["customerId"], money_data["balance"])
@@ -96,13 +96,13 @@ def deposit(account_id: str, balance: str):
 
 
 
-
-@app.patch("/account/<account_id>/<balance>")
+# Database, Postman not catching the insufficient funds exception!!!!
+@app.patch("/account/withdraw/<account_id>/<balance>")
 def withdraw(account_id: str, balance: str):
     try:
-        money_data = request.get_json()
-        new_balance = BankAccount(int(account_id), money_data["customerId"], money_data["balance"])
-        bank_account_service.service_withdraw(int(balance), new_balance)
+        # money_data = request.get_json()
+        # new_balance = BankAccount(int(account_id), money_data["customerId"], int(balance))
+        bank_account_service.service_withdraw(int(account_id), float(balance))
         return "The balance in account {} has been updated.".format(account_id)
     except InsufficientFundsException as i:
         exception_dictionary = {"Message": str(i)}

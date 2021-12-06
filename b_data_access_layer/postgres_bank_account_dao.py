@@ -40,10 +40,10 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
 
-    def withdraw(self, withdraw: int, bank_account: BankAccount):
+    def withdraw(self, account_id: int, withdraw: float):
         sql = 'update "project0".bank_account set balance = balance - %s where account_id = %s returning balance'
         cursor = connection.cursor()
-        cursor.execute(sql, (withdraw, bank_account.account_id))
+        cursor.execute(sql, (withdraw, account_id))
         account_balance = cursor.fetchone()[0]
         connection.commit()
         return account_balance

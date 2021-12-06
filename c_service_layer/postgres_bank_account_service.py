@@ -25,12 +25,15 @@ class BankAccountPostgresService(BankAccountService):
 
 
 
-    def service_withdraw(self, withdraw: int, bank_account: BankAccount):
+    def service_withdraw(self, account_id: int, withdraw: float):
         # Business logic: money in an account cannot go beneath 0.
+        bank_account = self.bank_account_dao.view_bank_account(account_id)
         if bank_account.balance < withdraw:
             raise InsufficientFundsException("Insufficient funds to make this withdrawal.")
+        elif withdraw < 0:
+            raise InsufficientFundsException("Insufficient funds to make this withdrawal.")
         else:
-            return self.bank_account_dao.withdraw(withdraw, bank_account)
+            return self.bank_account_dao.withdraw(account_id, withdraw)
 
 
 

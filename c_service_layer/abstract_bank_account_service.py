@@ -17,7 +17,7 @@ class BankAccountService(ABC):
         pass
 
     @abstractmethod
-    def service_withdraw(self, withdraw: int, bank_account: BankAccount):
+    def service_withdraw(self, account_id: int, withdraw: float):
         pass
 
     @abstractmethod
