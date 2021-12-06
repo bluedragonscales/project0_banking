@@ -41,6 +41,11 @@ class BankAccountDAO(ABC):
         pass
 
 
+    # The abstract method to view all accounts that one customer has.
+    @abstractmethod
+    def view_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
+        pass
+
 
     # The abstract method to view all of the created bank accounts. No arguments to pass because it's just a list of
     # everything. What's returned is a list.

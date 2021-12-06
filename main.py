@@ -128,6 +128,7 @@ def transfer_funds(account_one: str, account_two: str, balance: str):
 
 
 
+
 @app.get("/customer")
 def view_all_customers():
     all_customers = customer_service.service_view_all_customers()
@@ -136,6 +137,17 @@ def view_all_customers():
         dictionary_customers = cust.customer_dictionary()
         customers_as_dictionaries.append(dictionary_customers)
     return jsonify(customers_as_dictionaries)
+
+
+
+@app.get("/account/<customer_id>")
+def view_accounts_per_customer(customer_id: str):
+    customer_accounts = bank_account_service.service_view_accounts_per_customer(int(customer_id))
+    cust_accounts_as_dictionaries = []
+    for cust in customer_accounts:
+        cust_dictionary_accounts = cust.bank_account_dictionary()
+        cust_accounts_as_dictionaries.append(cust_dictionary_accounts)
+    return jsonify(cust_accounts_as_dictionaries)
 
 
 

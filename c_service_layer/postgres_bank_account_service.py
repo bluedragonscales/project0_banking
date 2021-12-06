@@ -46,6 +46,10 @@ class BankAccountPostgresService(BankAccountService):
 
 
 
+    def service_view_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
+        return self.bank_account_dao.view_accounts_per_customer(customer_id)
+
+
     def service_view_all_bank_accounts(self) -> list[BankAccount]:
         return self.bank_account_dao.view_all_bank_accounts()
 

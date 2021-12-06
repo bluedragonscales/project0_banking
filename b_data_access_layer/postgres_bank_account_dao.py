@@ -62,6 +62,17 @@ class BankAccountPostgresDAO(BankAccountDAO):
 
 
 
+    def view_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
+        sql = 'select * from "project0".bank_account where customer_id = %s'
+        cursor = connection.cursor()
+        cursor.execute(sql, [customer_id])
+        accounts_per_customer = cursor.fetchall()
+        customer_account_list = []
+        for cust_accounts in accounts_per_customer:
+            customer_account_list.append(BankAccount(*cust_accounts))
+        return customer_account_list
+
+
 
     def view_all_bank_accounts(self) -> list[BankAccount]:
         sql = 'select * from "project0".bank_account'

@@ -25,6 +25,10 @@ class BankAccountService(ABC):
         pass
 
     @abstractmethod
+    def service_view_accounts_per_customer(self, customer_id: int) -> list[BankAccount]:
+        pass
+
+    @abstractmethod
     def service_view_all_bank_accounts(self) -> list[BankAccount]:
         pass
 

@@ -34,7 +34,7 @@ def test_deposit_happy():
 
 def test_withdraw_happy():
     withdraw_account = BankAccount(10, 4, 500)
-    update_balance = postgres_bank_account_dao.withdraw(10, withdraw_account)
+    update_balance = postgres_bank_account_dao.withdraw(10, 10)
     assert update_balance < 500
 
 
@@ -45,6 +45,12 @@ def test_transfer_funds_happy():
     customer_accounts_transfer = postgres_bank_account_dao.transfer_funds(6, transfer_one, transfer_two)
     assert customer_accounts_transfer > 10
 # works but doesn't show well.
+
+
+
+def test_view_accounts_per_customer_happy():
+    cust_accounts = postgres_bank_account_dao.view_accounts_per_customer(2)
+    assert len(cust_accounts) == 2
 
 
 
