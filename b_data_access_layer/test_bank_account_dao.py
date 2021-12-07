@@ -6,7 +6,7 @@ from b_data_access_layer.postgres_bank_account_dao import BankAccountPostgresDAO
 # Created instance of BankAccountPostgresDAO to be able to use those methods.
 postgres_bank_account_dao = BankAccountPostgresDAO()
 
-create_bank_one = BankAccount(0, 2, 15)
+create_bank_one = BankAccount(0, 4, 150)
 
 
 
@@ -33,17 +33,19 @@ def test_deposit_happy():
 
 
 def test_withdraw_happy():
-    withdraw_account = BankAccount(10, 4, 500)
-    update_balance = postgres_bank_account_dao.withdraw(10, 10)
-    assert update_balance < 500
+    # Pass in account_id and secondly the withdrawal amount.
+    update_balance = postgres_bank_account_dao.withdraw(10, 80)
+    assert update_balance == 320
 
 
 
 def test_transfer_funds_happy():
-    transfer_one = BankAccount(6, 6, 200)
-    transfer_two = BankAccount(11, 5, 10)
+    # Pass in first the amount to transfer, then the bank account to tranfer money from and then the bank account to
+    # transfer money into.
+    transfer_one = BankAccount(6, 6, 158)
+    transfer_two = BankAccount(14, 4, 1500)
     customer_accounts_transfer = postgres_bank_account_dao.transfer_funds(6, transfer_one, transfer_two)
-    assert customer_accounts_transfer > 10
+    assert customer_accounts_transfer > 1500
 # works but doesn't show well.
 
 
@@ -62,7 +64,6 @@ def test_view_all_accounts_happy():
 
 
 def test_delete_bank_account_happy():
-    # Passed in a bank account number.
-    # account_to_delete = BankAccount(0, 7, 0)
-    account_to_delete = postgres_bank_account_dao.delete_bank_account(12)
+    # Passed in a bank account id number.
+    account_to_delete = postgres_bank_account_dao.delete_bank_account(6)
     assert account_to_delete

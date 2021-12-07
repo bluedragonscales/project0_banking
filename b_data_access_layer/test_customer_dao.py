@@ -8,7 +8,7 @@ postgres_customer_dao = CustomerPostgresDAO()
 
 # Created customer objects for testing.
 customer_postgres = Customer("Dean", "Winchester", 0)
-update_info_cust = Customer("Changed by", "update customer.", 7)
+update_info_cust = Customer("Changed by", "update method", 7)
 
 
 
@@ -29,7 +29,7 @@ def test_get_customer_information_happy():
 # Tests that an attempt to update an already created customer's information will succeed.
 def test_update_customer_information_happy():
     updated_customer = postgres_customer_dao.update_customer_information(update_info_cust)
-    assert updated_customer.last_name == "update customer."
+    assert updated_customer.last_name == "update method"
 
 
 
@@ -42,5 +42,5 @@ def test_view_all_customers_happy():
 
 # Tests that a customer will be deleted successfully when requested.
 def test_delete_customer_happy():
-    deleted_customer = postgres_customer_dao.delete_customer(17)
+    deleted_customer = postgres_customer_dao.delete_customer(1)
     assert deleted_customer
