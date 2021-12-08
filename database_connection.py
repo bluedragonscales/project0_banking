@@ -1,3 +1,6 @@
+# Here in this module we have created a connection object that supports the connection between this program and the
+# cloud database (in this case postgres).
+
 import os
 from psycopg import connect, OperationalError
 

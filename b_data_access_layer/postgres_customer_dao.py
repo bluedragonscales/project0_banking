@@ -1,14 +1,29 @@
-# Module for the DAO layer methods for the customer object.
+# This module contains the implemented DAO layer class, and it provides the main functionality for the program. We don't
+# create objects from it. Instead, it is used to pass the Customer object through methods that do specific tasks the
+# program needs for its interface.
 
+# This import contains the blueprint we created for the Customer object.
 from a_entities.customer import Customer
+# This import contains the abstract class so this implementing class can inherit the needed methods.
 from b_data_access_layer.abstract_customer_dao import CustomerDAO
+# This import contains the connection object that was created so these implemented methods can react with the cloud
+# database. In this program, we connect with a postgres database through Amazon Web Services (AWS).
 from database_connection import connection
+
 
 
 class CustomerPostgresDAO(CustomerDAO):
 
+    # This is the implementation to create a customer object. It has two parameters: "self" to connect it with this
+    # class and "customer" which is the base customer object blueprint. It needs the full blueprint to be able to create
+    # the customer with all the customer's information listed.
     def create_customer(self, customer: Customer) -> Customer:
-        # We use this sql statement to execute commands into our postgres database.
+        # Because we are connected to the postgres database and want to interact with it, we need to send it commands it
+        # knows how to read. The below sql statement is exactly what it would use to create a customer, using the "%s"
+        # in the places where we pass information to. "%s" is a type of place holder for the "first_name" and the
+        # "last_name" variables that are given as arguments to the customer object parameters before they end up here.
+        # The "default" is used as the third argument, "customer_id", because postgres will auto create this value.
+        # Finally, once argument values are passed to this statement, it is stored in the variable container "sql".
         sql = 'insert into "project0".customer values(%s, %s, default) returning customer_id'
         # The cursor variable created with the "cursor()" function called by the connection object allows the execution
         # of sql from this end of the server.
