@@ -19,15 +19,15 @@ class CustomerDAO(ABC):
 
     # The abstract method to create a customer. We pass in the whole customer object that was imported at the top of
     # this module so we have access to all the info for that customer. The return type is also annotated as the whole
-    # object.
+    # object so that when the information returns to the database and the API, all the information will be available.
     @abstractmethod
     def create_customer(self, customer: Customer) -> Customer:
         pass
 
 
     # The abstract method to view information associated with the customer. We pass the unique customer_id into the
-    # method so all the information associated with that particular customer will be returned to the front end. The
-    # return type is the whole customer object.
+    # method so all the information associated with that particular id will be found in the database. The return type is
+    # the whole customer object because the API user wants to see all of that information.
     @abstractmethod
     def get_customer_information(self, customer_id: int) -> Customer:
         pass

@@ -20,7 +20,7 @@ class Customer:
         return {
             "firstName" : self.first_name,
             "lastName" : self.last_name,
-            "customerId" : self.customer_id,
+            "customerId" : self.customer_id
         }
 
 

@@ -27,7 +27,8 @@ def create_customer():
     try:
         # We retrieve the request that the API sent to this server.
         customer_data = request.get_json()
-        # We format the data so that it is read correctly by the server.
+        # We format the data so that it is read correctly by the server. The API user is passing their information to us
+        # so we need to give the database a way to read it.
         new_customer = Customer(customer_data["firstName"], customer_data["lastName"], customer_data["customerId"])
         # We pass this retrieved and formatted data into our service layer.
         customer_to_return = customer_service.service_create_customer(new_customer)
@@ -58,6 +59,8 @@ def create_bank_account():
 
 @app.get("/customer/<customer_id>")
 def get_customer_information(customer_id: str):
+    # There is no body returned to the server with this verb there is only the request to send information back out to
+    # the API.
     result = customer_service.service_get_customer_information(int(customer_id))
     result_as_dictionary = result.customer_dictionary()
     result_as_json = jsonify(result_as_dictionary)
@@ -100,8 +103,6 @@ def deposit(account_id: str, balance: str):
 @app.patch("/account/withdraw/<account_id>/<balance>")
 def withdraw(account_id: str, balance: str):
     try:
-        # money_data = request.get_json()
-        # new_balance = BankAccount(int(account_id), money_data["customerId"], int(balance))
         bank_account_service.service_withdraw(int(account_id), float(balance))
         return "The balance in account {} has been updated.".format(account_id)
     except InsufficientFundsException as i:
