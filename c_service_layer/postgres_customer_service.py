@@ -1,3 +1,6 @@
+# The customer service layer is used to catch user errors before the API request gets to the DAO layer methods. It's
+# important to cover as many types of errors that could happen as possible.
+
 from a_entities.customer import Customer
 from b_data_access_layer.postgres_bank_account_dao import BankAccountPostgresDAO
 from b_data_access_layer.postgres_customer_dao import CustomerPostgresDAO

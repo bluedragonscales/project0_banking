@@ -103,6 +103,9 @@ def deposit(account_id: str, balance: str):
 @app.patch("/account/withdraw/<account_id>/<balance>")
 def withdraw(account_id: str, balance: str):
     try:
+        # The request from the API comes in as string information so the account id and balance has to be converted back
+        # to the proper data types into the method.
+        # The front end is not sending us a body of information so we don't need to do the request.get_json function.
         bank_account_service.service_withdraw(int(account_id), float(balance))
         return "The balance in account {} has been updated.".format(account_id)
     except InsufficientFundsException as i:
@@ -132,6 +135,7 @@ def transfer_funds(account_one: str, account_two: str, balance: str):
 
 @app.get("/customer")
 def view_all_customers():
+    # The front end is not sending us a body of information so we don't need to do the request.get_json function.
     all_customers = customer_service.service_view_all_customers()
     customers_as_dictionaries = []
     for cust in all_customers:

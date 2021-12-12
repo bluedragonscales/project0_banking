@@ -56,7 +56,9 @@ class CustomerPostgresDAO(CustomerDAO):
         # out so it doesn't interact with anything further than what it's supposed to.
         connection.commit()
         # Because the API expects to receive all the information necessary to create the customer, the whole customer
-        # must be returned from the method even though our test only specifies that it needs the customer_id value.
+        # must be returned from the method even though our test only specifies that it needs the customer_id value. The
+        # new customer object is returned to the database (not to the API because the request was only to create, not to
+        # view the creation).
         return customer
 
 
@@ -94,35 +96,53 @@ class CustomerPostgresDAO(CustomerDAO):
     def update_customer_information(self, customer: Customer) -> Customer:
         # This is the postgres statement to update information in a table. All variables of the customer object can be
         # changed (in this case there are only two variables) where the id of the passed in customer object matches the
-        # database table row. WHY DO WE NEED TO RETURN THE CUSTOMER_ID? IS IT REQUIRED TO UPDATE THE CUSTOMER? OR IS
-        # THIS JUST AN OUTDATED PIECE OF CODE?
-        sql = 'update "project0".customer set first_name = %s, last_name = %s ' \
-              'where customer_id = %s returning customer_id'
+        # database table row.
+        sql = 'update "project0".customer set first_name = %s, last_name = %s where customer_id = %s'
         cursor = connection.cursor()
+        # The execute function channels the sql statement along with the information from the API request body to fill
+        # it out into the database to make the changes.
         cursor.execute(sql, (customer.first_name, customer.last_name, customer.customer_id))
-        customer.customer_id = cursor.fetchone()[0]
+        # This commits the changes and closes the connection so it doesn't interfere with any other information.
         connection.commit()
+        # The customer object with the new information is passed to the database (not to the API because the API only
+        # requested a change, not the ability to view that change).
         return customer
 
 
 
+    # This is the implementation method to view the whole list of customers that is listed in the database. It needs no
+    # parameters except for the "self" parameter because all the information is being returned with no constraints on
+    # how it is ordered or grouped. The API user sends the server a request that has no body of information.
     def view_all_customers(self) -> list[Customer]:
+        # This statement does not need any information passed into it and it does not receive any body information from
+        # the API front end so the execute function only takes the sql statement as an argument.
         sql = 'select * from "project0".customer'
         cursor = connection.cursor()
         cursor.execute(sql)
         # We use the "fetchall()" method for the cursor object because we are fetching all the information instead of
-        # just information that matches.
+        # just information that matches the sql statement.
         customer_records = cursor.fetchall()
+        # We start a list so that all the customer objects can be entered into a list.
         customer_list = []
+        # One by one, each customer row in the database is turned into a tuple and then passed into "Customer(*cust)" as
+        # a full object that is then appended to the customer object list. Then the next row/customer information tuple
+        # is passed in and appended.
         for cust in customer_records:
             customer_list.append(Customer(*cust))
+        # The list with all of the appended customer objects is returned to the front end API.
         return customer_list
 
 
 
+    # This is the implemented method to delete a customer. It contains the "self" parameter and an integer parameter we
+    # have named "customer_id" for readability because the API request will specify which customer to delete based on
+    # which defined customer_id is included in the request.
     def delete_customer(self, customer_id: int) -> bool:
+        # The request includes the id information and it gets passed into the sql statement and the execute method. WHY
+        # IS THERE NO BODY BUT THE METHOD STILL KNOWS WHAT CUSTOMER TO DELETE BY THE SIGNAL FROM THE FRONT END?
         sql = 'delete from "project0".customer where customer_id = %s'
         cursor = connection.cursor()
         cursor.execute(sql, [customer_id])
         connection.commit()
+        # No information needs to be returned so we just return True to notify the API that the deletion has been done.
         return True
